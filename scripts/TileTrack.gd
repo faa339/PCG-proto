@@ -26,10 +26,14 @@ func _ready():
 	if !map_seed:
 		map_seed = randi()
 	seed(map_seed)
-	print(map_seed)
 	tile_size = cell_size
-	make_maze()
-	translate_to_world()
+
+func translate_to_world():
+#	Finally, we translate the tilemap coordinates to world space (so that we can
+#	use them for later calculations) and put them into an array. We also paint 
+#	our road markers back onto the map.
+	
+	goal = map_to_world(goal, false) + cell_size/2
 
 
 func make_maze():
@@ -66,13 +70,7 @@ func make_maze():
 			unvisited.erase(current)
 		elif stack:
 			current = stack.pop_back()
-	goal = last_positions[randi()%last_positions.size()]
+	goal = last_positions[last_positions.size()-1]
+	set_cellv(goal, 21)
 
 
-func translate_to_world():
-#	Finally, we translate the tilemap coordinates to world space (so that we can
-#	use them for later calculations) and put them into an array. We also paint 
-#	our road markers back onto the map.
-	set_cellv(goal, 16)
-	goal = map_to_world(goal, false) + cell_size/2
-	print(goal)
